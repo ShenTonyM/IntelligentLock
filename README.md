@@ -1,2 +1,2 @@
 # IntelligentLock
-User management app
+User Management App
