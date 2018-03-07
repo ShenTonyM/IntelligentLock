@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/text_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Device Number"
+        android:textColor="#0000ff"
+        android:textSize="32sp"
+        android:layout_marginTop="140dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/edit_from"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="At the back of product"
+        android:layout_below="@id/text_from"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+    <TextView
+        android:id="@+id/text_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nickname"
+        android:textColor="#0000ff"
+        android:textSize="32sp"
+        android:layout_below="@+id/edit_from"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp" />
+    <EditText
+        android:id="@+id/edit_to"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_to"
+        android:hint="Let the family know who you are"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+    <Button
+        android:id="@+id/button_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Continue"
+        android:textSize="30dp"
+        android:textColor="#000000"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/edit_to"
+        android:layout_centerHorizontal="true" />
+
+    <!--<Button-->
+        <!--android:id="@+id/button_4"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Forget Password"-->
+        <!--android:textSize="15dp"-->
+        <!--android:textColor="#000000"-->
+        <!--android:layout_marginTop="12dp"-->
+        <!--android:layout_below="@+id/button_3"-->
+        <!--android:layout_centerHorizontal="true" />-->
+
+    <ImageView
+        android:id="@+id/image_lady"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/intelligent"
+        android:layout_marginTop="36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
