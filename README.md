@@ -1,2 +1,2 @@
 # IntelligentLock
-User Management App
+User Management Android App
