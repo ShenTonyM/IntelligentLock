@@ -3,7 +3,7 @@ package com.example.myf19.intelligentlock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class FiveActivity extends AppCompatActivity {
+public class AboutUsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

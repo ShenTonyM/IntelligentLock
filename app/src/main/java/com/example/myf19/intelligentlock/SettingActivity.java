@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class FourActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity {
 
 
     @Override
@@ -17,7 +17,16 @@ public class FourActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View V){
-                Intent intent = new Intent(FourActivity.this, FiveActivity.class);
+                Intent intent = new Intent(SettingActivity.this, AboutUsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button buttonHttp = (Button) findViewById(R.id.buttonHTTPTest);
+        buttonHttp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, HTTPActivity.class);
                 startActivity(intent);
             }
         });

@@ -11,10 +11,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -28,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ThirdActivity extends AppCompatActivity {
@@ -191,7 +188,7 @@ public class ThirdActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.setting:
-                Intent intent = new Intent(ThirdActivity.this, FourActivity.class);
+                Intent intent = new Intent(ThirdActivity.this, SettingActivity.class);
                 startActivity(intent);
                 break;
             default:

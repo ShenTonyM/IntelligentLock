@@ -29,6 +29,14 @@
         android:layout_below="@+id/text_contacts"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+    <Button
+        android:id="@+id/buttonHTTPTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HTTPTest"
+        android:textAllCaps="false"
+        android:layout_below="@+id/button_about"
+        android:textSize="25sp"/>
     <ImageView
         android:id="@+id/image_green"
         android:layout_width="60sp"
