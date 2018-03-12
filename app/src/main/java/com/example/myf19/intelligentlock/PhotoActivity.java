@@ -28,7 +28,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
-public class ThirdActivity extends AppCompatActivity {
+public class PhotoActivity extends AppCompatActivity {
     public static final int TAKE_PHOTO = 1;
 
     public static final int CHOOSE_PHOTO = 2;
@@ -40,7 +40,7 @@ public class ThirdActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_third);
+        setContentView(R.layout.activity_photo);
         Button takePhoto = (Button) findViewById(R.id.take_photo);
         Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
         picture = (ImageView) findViewById(R.id.picture);
@@ -60,7 +60,7 @@ public class ThirdActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT < 24) {
                     imageUri = Uri.fromFile(outputImage);
                 } else {
-                    imageUri = FileProvider.getUriForFile(ThirdActivity.this, "com.example.cameraalbumtest.fileprovider", outputImage);
+                    imageUri = FileProvider.getUriForFile(PhotoActivity.this, "com.example.cameraalbumtest.fileprovider", outputImage);
                 }
                 // 启动相机程序
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -71,8 +71,8 @@ public class ThirdActivity extends AppCompatActivity {
         chooseFromAlbum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(ThirdActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(ThirdActivity.this, new String[]{ Manifest.permission. WRITE_EXTERNAL_STORAGE }, 1);
+                if (ContextCompat.checkSelfPermission(PhotoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(PhotoActivity.this, new String[]{ Manifest.permission. WRITE_EXTERNAL_STORAGE }, 1);
                 } else {
                     openAlbum();
                 }
@@ -188,7 +188,7 @@ public class ThirdActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.setting:
-                Intent intent = new Intent(ThirdActivity.this, SettingActivity.class);
+                Intent intent = new Intent(PhotoActivity.this, SettingActivity.class);
                 startActivity(intent);
                 break;
             default:

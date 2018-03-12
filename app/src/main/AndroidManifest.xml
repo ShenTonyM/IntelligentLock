@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myf19.intelligentlock">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
@@ -18,9 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SelfIntroActivity" />
-        <activity android:name=".ThirdActivity" />
+        <activity android:name=".PhotoActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".AboutUsActivity" />
+        <activity android:name=".HTTPActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -32,7 +34,6 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".HTTPActivity"></activity>
     </application>
 
 </manifest>

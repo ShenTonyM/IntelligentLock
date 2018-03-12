@@ -12,7 +12,7 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_four);
+        setContentView(R.layout.activity_setting);
         Button button1 = (Button) findViewById(R.id.button_about);
         button1.setOnClickListener(new View.OnClickListener(){
             @Override

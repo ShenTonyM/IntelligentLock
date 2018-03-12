@@ -61,7 +61,7 @@ public class HTTPActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-            // Sample from OKHttp Website
+            // Sample from OKHttp Website, post operation
             try{
                 OkHttpClient client = new OkHttpClient();
                 String s = "{'winCondition':'HIGH_SCORE'}";

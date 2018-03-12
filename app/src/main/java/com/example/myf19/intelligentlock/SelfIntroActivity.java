@@ -16,7 +16,7 @@ public class SelfIntroActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View V){
-                Intent intent = new Intent(SelfIntroActivity.this, ThirdActivity.class);
+                Intent intent = new Intent(SelfIntroActivity.this, PhotoActivity.class);
                 startActivity(intent);
             }
         });
