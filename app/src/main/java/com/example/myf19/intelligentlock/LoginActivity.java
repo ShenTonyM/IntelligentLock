@@ -27,15 +27,17 @@ public class LoginActivity extends BaseReceiverActivity {
                 String account = accountEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
 
-                // 如果账号是admin且密码是123456，就认为登录成功
-                if (account.equals("admin") && password.equals("123456")) {
-                    Intent intent = new Intent(LoginActivity.this, SelfIntroActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(LoginActivity.this, "account or password is invalid",
-                            Toast.LENGTH_SHORT).show();
-                }
+//                // 如果账号是admin且密码是123456，就认为登录成功
+//                if (account.equals("admin") && password.equals("123456")) {
+//                    Intent intent = new Intent(LoginActivity.this, SelfIntroActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                } else {
+//                    Toast.makeText(LoginActivity.this, "account or password is invalid",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+                Intent intent = new Intent(LoginActivity.this, SelfIntroActivity.class);
+                startActivity(intent);
             }
         });
     }

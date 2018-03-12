@@ -31,9 +31,14 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+import java.io.IOException;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+
 
 public class HTTPActivity extends AppCompatActivity implements View.OnClickListener{
     TextView responseText;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +61,41 @@ public class HTTPActivity extends AppCompatActivity implements View.OnClickListe
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder()
-                            // 指定访问的服务器地址是电脑本机
-                            .url("https://www.baidu.com")
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    String responseData = response.body().string();
-//                    parseJSONWithGSON(responseData);
-//                    parseJSONWithJSONObject(responseData);
-//                    parseXMLWithSAX(responseData);
-//                    parseXMLWithPull(responseData);
-                    showResponse(responseData);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            // Sample from OKHttp Website
+            try{
+                OkHttpClient client = new OkHttpClient();
+                String s = "{'winCondition':'HIGH_SCORE'}";
+//                JSONObject json = new JSONObject();
+//                json.put("username", "Spring");
+                RequestBody body = RequestBody.create(JSON, s);
+                Request request = new Request.Builder()
+                        .url("http://10.0.2.2:8086/get_data.xml")
+                        .post(body)
+                        .build();
+                Response response = client.newCall(request).execute();
+                String responseData = response.body().string();
+                showResponse(responseData);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Sample from First Line Android
+//            try {
+//                OkHttpClient client = new OkHttpClient();
+//                Request request = new Request.Builder()
+//                        // 指定访问的服务器地址是电脑本机
+//                        .url("http://10.0.2.2:8086/get_data.xml")
+//                        .build();
+//                Response response = client.newCall(request).execute();
+//                String responseData = response.body().string();
+////                    parseJSONWithGSON(responseData);
+////                    parseJSONWithJSONObject(responseData);
+////                    parseXMLWithSAX(responseData);
+////                    parseXMLWithPull(responseData);
+//                showResponse(responseData);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
             }
         }).start();
     }
