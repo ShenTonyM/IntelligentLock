@@ -17,16 +17,29 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class PhotoActivity extends AppCompatActivity {
     public static final int TAKE_PHOTO = 1;
@@ -36,6 +49,9 @@ public class PhotoActivity extends AppCompatActivity {
     private ImageView picture;
 
     private Uri imageUri;
+
+    TextView responseText;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +125,9 @@ public class PhotoActivity extends AppCompatActivity {
                         // 将拍摄的照片显示出来
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         picture.setImageBitmap(bitmap);
+                        String imgBase64;
+                        imgBase64 = Bitmap2StrByBase64(bitmap);
+                        sendRequestWithOkHttp(imgBase64);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -200,5 +219,99 @@ public class PhotoActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+
+    public String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+    private void sendRequestWithOkHttp(final String imgBase64) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    // Code adjusted from code for Raspberry Pi for Aliyun
+                    final JSONObject json = new JSONObject();
+                    json.put("type", "1");
+                    json.put("content", imgBase64);
+                    String jsonString = json.toString().replace("\\","");
+                    Log.d("Ok",jsonString);
+
+                    String host = "http://rlsxsb.market.alicloudapi.com";
+                    String path = "/face/attribute";
+                    String appcode = "a3d794449e5b43b09daf823623e9f0e7";
+                    String url = host + path;
+
+                    // Http Code
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS)
+                            .build();
+                    RequestBody body = RequestBody.create(JSON, jsonString);
+                    Request request = new Request.Builder()
+                            .addHeader("Authorization", "APPCODE"+ appcode)
+                            .addHeader("Content-Type", "application/json; charset=UTF-8")
+                            .url(url)
+                            .post(body)
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    int resonseCode = response.code();
+                    String responseData = response.body().string();
+                    Log.d("ResponseCode", String.valueOf(resonseCode));
+                    Log.d("Result", responseData);
+//                    showResponse(responseData);
+
+//                    // Code for Face++ API
+//                    HashMap<String, String> map = new HashMap<>();
+//                    map.put("api_key", "lWkHEc9A2tvuOuNyadQf3DyNKZnGJnkY");
+//                    map.put("api_secret", "tI6copw0vo-5Zg9pQVkg7PGhAQoli4Rt");
+//
+//                    final JSONObject json = new JSONObject();
+//                    json.put("api_key", "lWkHEc9A2tvuOuNyadQf3DyNKZnGJnkY");
+//                    json.put("api_secret","tI6copw0vo-5Zg9pQVkg7PGhAQoli4Rt");
+//                    json.put("image_base64", imgBase64);
+//                    String jsonString = json.toString().replace("\\","");
+//                    Log.d("Ok",jsonString);
+//
+//                    String url = "https://api-cn.faceplusplus.com/facepp/v3/detect";
+//
+//                    OkHttpClient client = new OkHttpClient.Builder()
+//                            .connectTimeout(10, TimeUnit.SECONDS)
+//                            .writeTimeout(10, TimeUnit.SECONDS)
+//                            .readTimeout(30, TimeUnit.SECONDS)
+//                            .build();;
+//                    RequestBody body = RequestBody.create(JSON, jsonString);
+//                    Request request = new Request.Builder()
+//                            .addHeader("Content-Type", "application/json; charset=UTF-8")
+//                            .url(url)
+//                            .post(body)
+//                            .build();
+//                    Response response = client.newCall(request).execute();
+//                    int resonseCode = response.code();
+//                    String responseData = response.body().string();
+//                    Log.d("ResponseCode", String.valueOf(resonseCode));
+//                    Log.d("Result", responseData);
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+    }
+
+    private void showResponse(final String response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // 在这里进行UI操作，将结果显示到界面上
+                responseText.setText(response);
+            }
+        });
     }
 }
