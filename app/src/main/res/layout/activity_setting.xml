@@ -1,23 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
-
-    <TextView
-        android:id="@+id/text_contacts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Push Information"
-        android:textSize="30sp"
-        android:textColor="#000000"
-        android:layout_marginTop="12dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-
 
     <Button
         android:id="@+id/button_about"
@@ -25,28 +11,21 @@
         android:layout_height="wrap_content"
         android:text="About Us"
         android:textSize="30sp"
-        android:textAllCaps="false"
-        android:layout_below="@+id/text_contacts"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textAllCaps="false" />
     <Button
         android:id="@+id/buttonHTTPTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HTTPTest"
+        android:text="HTTP Test"
         android:textAllCaps="false"
-        android:layout_below="@+id/button_about"
-        android:textSize="25sp"/>
-    <ImageView
-        android:id="@+id/image_green"
-        android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:src="@drawable/green"
-        android:layout_marginRight="16sp"
-        android:layout_marginEnd="16sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textSize="30sp"/>
 
+    <Button
+        android:id="@+id/buttonOtherMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other Members"
+        android:textAllCaps="false"
+        android:textSize="30sp"/>
 
-</RelativeLayout>
+</LinearLayout>

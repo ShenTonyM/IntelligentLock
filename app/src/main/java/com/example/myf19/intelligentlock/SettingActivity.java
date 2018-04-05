@@ -30,5 +30,14 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button buttonOtherMembers = (Button) findViewById(R.id.buttonOtherMembers);
+        buttonOtherMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, UserGroupActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
