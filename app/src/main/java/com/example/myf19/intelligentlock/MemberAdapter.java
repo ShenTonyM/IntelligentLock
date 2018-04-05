@@ -1,6 +1,9 @@
 package com.example.myf19.intelligentlock;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +38,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag(); // 重新获取ViewHolder
         }
-        viewHolder.fruitImage.setImageResource(member.getImageId());
+        viewHolder.fruitImage.setImageBitmap(base64ToBitmap(member.getImgString()));
         viewHolder.fruitName.setText(member.getName());
         return view;
     }
@@ -46,6 +49,11 @@ public class MemberAdapter extends ArrayAdapter<Member> {
 
         TextView fruitName;
 
+    }
+
+    public static Bitmap base64ToBitmap(String base64Data) {
+        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
 }

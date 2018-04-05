@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/button_showMembers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Members"
+        android:layout_gravity="center"
+        android:textSize="30sp">
+    </Button>
+
     <ListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
