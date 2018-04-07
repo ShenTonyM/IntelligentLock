@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -235,11 +236,22 @@ public class PhotoActivity extends AppCompatActivity {
             public void run() {
                 try{
                     // Code adjusted from code for Raspberry Pi for Aliyun
+                    /* Method_1 to 使用json传递键值对 */
                     final JSONObject json = new JSONObject();
                     json.put("type", "1");
-                    json.put("content", imgBase64);
-                    String jsonString = json.toString().replace("\\","");
+//                    json.put("content", imgBase64);
+                    // 暂时测试下json上传
+                    String jsonString = json.toString();
+                    // replace \\ 是因为json里面的base64字符串会莫名其妙多出一些 \\
+//                    String jsonString = json.toString().replace("\\","");
                     Log.d("Ok",jsonString);
+                    RequestBody body = RequestBody.create(JSON, jsonString);
+
+                    /* Method_1 to 使用FormBody传递键值对 */
+//                    RequestBody formBody = new FormBody.Builder()
+//                            .add("type", "1")
+//                            .add("content",imgBase64)
+//                            .build();
 
                     String host = "http://rlsxsb.market.alicloudapi.com";
                     String path = "/face/attribute";
@@ -252,7 +264,6 @@ public class PhotoActivity extends AppCompatActivity {
                             .writeTimeout(10, TimeUnit.SECONDS)
                             .readTimeout(30, TimeUnit.SECONDS)
                             .build();
-                    RequestBody body = RequestBody.create(JSON, jsonString);
                     Request request = new Request.Builder()
                             .addHeader("Authorization", "APPCODE"+ appcode)
                             .addHeader("Content-Type", "application/json; charset=UTF-8")
@@ -264,39 +275,14 @@ public class PhotoActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     Log.d("ResponseCode", String.valueOf(resonseCode));
                     Log.d("Result", responseData);
+
+                    if(resonseCode != 200){
+                        Toast.makeText(PhotoActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(PhotoActivity.this, "Image upload successfully", Toast.LENGTH_SHORT).show();
+                    }
 //                    showResponse(responseData);
-
-//                    // Code for Face++ API
-//                    HashMap<String, String> map = new HashMap<>();
-//                    map.put("api_key", "lWkHEc9A2tvuOuNyadQf3DyNKZnGJnkY");
-//                    map.put("api_secret", "tI6copw0vo-5Zg9pQVkg7PGhAQoli4Rt");
-//
-//                    final JSONObject json = new JSONObject();
-//                    json.put("api_key", "lWkHEc9A2tvuOuNyadQf3DyNKZnGJnkY");
-//                    json.put("api_secret","tI6copw0vo-5Zg9pQVkg7PGhAQoli4Rt");
-//                    json.put("image_base64", imgBase64);
-//                    String jsonString = json.toString().replace("\\","");
-//                    Log.d("Ok",jsonString);
-//
-//                    String url = "https://api-cn.faceplusplus.com/facepp/v3/detect";
-//
-//                    OkHttpClient client = new OkHttpClient.Builder()
-//                            .connectTimeout(10, TimeUnit.SECONDS)
-//                            .writeTimeout(10, TimeUnit.SECONDS)
-//                            .readTimeout(30, TimeUnit.SECONDS)
-//                            .build();;
-//                    RequestBody body = RequestBody.create(JSON, jsonString);
-//                    Request request = new Request.Builder()
-//                            .addHeader("Content-Type", "application/json; charset=UTF-8")
-//                            .url(url)
-//                            .post(body)
-//                            .build();
-//                    Response response = client.newCall(request).execute();
-//                    int resonseCode = response.code();
-//                    String responseData = response.body().string();
-//                    Log.d("ResponseCode", String.valueOf(resonseCode));
-//                    Log.d("Result", responseData);
-
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
