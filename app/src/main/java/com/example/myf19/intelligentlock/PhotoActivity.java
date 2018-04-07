@@ -29,14 +29,17 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -129,6 +132,17 @@ public class PhotoActivity extends AppCompatActivity {
                         String imgBase64;
                         imgBase64 = Bitmap2StrByBase64(bitmap);
                         sendRequestWithOkHttp(imgBase64);
+//                        File file=new File(getExternalCacheDir(), "output_image.jpg");//将要保存图片的路径
+//                        try
+//                        {
+//                            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+//                            bos.flush();
+//                            bos.close();
+//                        }
+//                        catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -235,28 +249,12 @@ public class PhotoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    // Code adjusted from code for Raspberry Pi for Aliyun
-                    /* Method_1 to 使用json传递键值对 */
-                    final JSONObject json = new JSONObject();
-                    json.put("type", "1");
-//                    json.put("content", imgBase64);
-                    // 暂时测试下json上传
-                    String jsonString = json.toString();
-                    // replace \\ 是因为json里面的base64字符串会莫名其妙多出一些 \\
-//                    String jsonString = json.toString().replace("\\","");
-                    Log.d("Ok",jsonString);
-                    RequestBody body = RequestBody.create(JSON, jsonString);
+                    // formbody的数据
+                    FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                    formBody.add("key","250");//传递键值对参数
+                    formBody.add("image_base64",imgBase64);
 
-                    /* Method_1 to 使用FormBody传递键值对 */
-//                    RequestBody formBody = new FormBody.Builder()
-//                            .add("type", "1")
-//                            .add("content",imgBase64)
-//                            .build();
-
-                    String host = "http://rlsxsb.market.alicloudapi.com";
-                    String path = "/face/attribute";
-                    String appcode = "a3d794449e5b43b09daf823623e9f0e7";
-                    String url = host + path;
+                    String url = "http://101.132.165.232:8000/maoshen";
 
                     // Http Code
                     OkHttpClient client = new OkHttpClient.Builder()
@@ -265,23 +263,21 @@ public class PhotoActivity extends AppCompatActivity {
                             .readTimeout(30, TimeUnit.SECONDS)
                             .build();
                     Request request = new Request.Builder()
-                            .addHeader("Authorization", "APPCODE"+ appcode)
-                            .addHeader("Content-Type", "application/json; charset=UTF-8")
                             .url(url)
-                            .post(body)
+                            .post(formBody.build())
                             .build();
                     Response response = client.newCall(request).execute();
-                    int resonseCode = response.code();
-                    String responseData = response.body().string();
+                    final int resonseCode = response.code();
+                    final String responseData = response.body().string();
                     Log.d("ResponseCode", String.valueOf(resonseCode));
                     Log.d("Result", responseData);
-
-                    if(resonseCode != 200){
-                        Toast.makeText(PhotoActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Toast.makeText(PhotoActivity.this, "Image upload successfully", Toast.LENGTH_SHORT).show();
-                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 在这里进行UI操作，将结果显示到界面上
+                            Toast.makeText(PhotoActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                        }
+                    });
 //                    showResponse(responseData);
                 }catch (Exception e) {
                     e.printStackTrace();
