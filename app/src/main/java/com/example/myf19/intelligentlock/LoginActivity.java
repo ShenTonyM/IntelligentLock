@@ -28,7 +28,9 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
     private EditText username;
     private EditText password;
     private Button btn_login;
-    LoginResult m_result;
+    private Button btn_register;
+
+    String m_result;
     Map<String, String> map = new HashMap<String, String>();
 
     @SuppressLint("HandlerLeak")
@@ -48,10 +50,6 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                     case 123:
                         try
                         {
-                            //获取用户登录的结果
-                            LoginResult result = (LoginResult)msg.obj;
-                            String userName = result.getNicename();
-
                             Toast.makeText(LoginActivity.this, "您成功登录",Toast.LENGTH_SHORT).show();
 
                             //跳转到登录成功的界面
@@ -73,8 +71,10 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
         username = (EditText) findViewById(R.id.edit_account);
         password = (EditText) findViewById(R.id.edit_password);
         btn_login = (Button) findViewById(R.id.button_login);
+        btn_register = (Button)findViewById(R.id.button_register);
 
         btn_login.setOnClickListener(this);
+        btn_register.setOnClickListener(this);
 
     }
 
@@ -94,56 +94,26 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                     public void run() {
                         try
                         {
-                             /* 老方法 */
-//                            /* 使用FormBody传递键值对 */
-//                            RequestBody formBody = new FormBody.Builder()
-//                                    .add("account", account)
-//                                    .add("password",password)
-//                                    .build();
-//
-//                            /* 网址未定 */
-//                            String host = "http://rlsxsb.market.alicloudapi.com";
-//                            String path = "/face/attribute";
-//                            String appcode = "a3d794449e5b43b09daf823623e9f0e7";
-//                            String url = host + path;
-//
-//                            // Http Code
-//                            OkHttpClient client = new OkHttpClient.Builder()
-//                                    .connectTimeout(10, TimeUnit.SECONDS)
-//                                    .writeTimeout(10, TimeUnit.SECONDS)
-//                                    .readTimeout(30, TimeUnit.SECONDS)
-//                                    .build();
-//                            Request request = new Request.Builder()
-//                                    .addHeader("Authorization", "APPCODE"+ appcode)
-//                                    .url(url)
-//                                    .post(formBody)
-//                                    .build();
-//                            Response response = client.newCall(request).execute();
-//                            int resonseCode = response.code();
-//                            String responseData = response.body().string();
-//                            Log.d("ResponseCode", String.valueOf(resonseCode));
-//                            Log.d("Result", responseData);
-
                             //POST信息中加入用户名和密码
                             /* 网址未定 */
-                            String host = "http://rlsxsb.market.alicloudapi.com";
-                            String path = "/face/attribute";
-                            String appcode = "a3d794449e5b43b09daf823623e9f0e7";
-                            String url = host + path;
+                            String url = "http://101.132.165.232:8000/maoshen/login";
 
-                            map.put("uid", username.getText().toString().trim());
-                            map.put("pwd", password.getText().toString().trim());
-                            //HttpUtils.httpPostMethod(url, json, handler);
+                            map.put("username", username.getText().toString().trim());
+                            map.put("password", password.getText().toString().trim());
                             HttpUtils.post(url, new Callback() {
                                 @Override
                                 public void onFailure(Call call, IOException e) {
-                                    Log.e("DaiDai", "OnFaile:",e);
+                                    Log.e("TAG", "NetConnect error!");
                                 }
 
                                 @Override
                                 public void onResponse(Call call, Response response) throws IOException {
                                     String responseBody = response.body().string();
-                                    m_result = parseJSONWithGson(responseBody);
+
+                                    //不用例子里的LoginResult
+//                                    m_result = parseJSONWithGson(responseBody);
+                                    m_result = responseBody;
+
                                     //发送登录成功的消息
                                     Message msg = handler.obtainMessage();
                                     msg.what = 123;
@@ -159,10 +129,10 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                     }
                 }).start();
                 break;
-//            case R.id.btn_register:
-//                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                startActivity(intent);
-//                break;
+            case R.id.btn_register:
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 }

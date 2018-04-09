@@ -13,7 +13,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="Username:"
+            android:text="员  工  号 :"
             android:textSize="@dimen/activity_text_size" />
 
         <EditText
@@ -21,6 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:text="dai1"
             android:textSize="@dimen/activity_text_size" />
 
     </LinearLayout>
@@ -38,7 +39,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="Password："
+            android:text="密       码："
             android:textSize="@dimen/activity_text_size" />
 
         <EditText
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:inputType="textPassword"
+            android:text="123"
             android:textSize="@dimen/activity_text_size" />
     </LinearLayout>
 
@@ -63,7 +65,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="Re-enter Password:"
+            android:text="确认密码："
             android:textSize="@dimen/activity_text_size" />
 
         <EditText
@@ -72,6 +74,7 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:inputType="textPassword"
+            android:text="123"
             android:textSize="@dimen/activity_text_size" />
     </LinearLayout>
 
@@ -79,9 +82,96 @@
         android:layout_width="fill_parent"
         android:layout_height="10dp" />
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="姓       名："
+            android:textSize="@dimen/activity_text_size" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="我的小呆呆"
+            android:textSize="@dimen/activity_text_size" />
+    </LinearLayout>
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="10dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:paddingTop="7dp"
+                android:text="性       别："
+                android:textSize="@dimen/activity_text_size" />
+
+            <RadioGroup
+                android:id="@+id/radio_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/radio_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="男"
+                    android:textSize="@dimen/activity_text_size" />
+
+                <RadioButton
+                    android:id="@+id/radio_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    android:textSize="@dimen/activity_text_size" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="民      族："
+                android:textSize="@dimen/activity_text_size" />
+
+            <EditText
+                android:id="@+id/et_nation"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="呆呆族"
+                android:textSize="@dimen/activity_text_size" />
+        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -104,7 +194,7 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:layout_weight="1"
-            android:text="Submit"
+            android:text="提交"
             android:textSize="@dimen/activity_text_size" />
 
         <View
@@ -118,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Reset"
+            android:text="重置"
             android:textSize="@dimen/activity_text_size" />
 
         <View
