@@ -53,7 +53,8 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                             Toast.makeText(LoginActivity.this, "您成功登录",Toast.LENGTH_SHORT).show();
 
                             //跳转到登录成功的界面
-                            Intent intent = new Intent(LoginActivity.this, SelfIntroActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, PhotoActivity.class);
+                            intent.putExtra("username", username.getText().toString().trim());
                             startActivity(intent);
                         }
                         catch (Exception e)

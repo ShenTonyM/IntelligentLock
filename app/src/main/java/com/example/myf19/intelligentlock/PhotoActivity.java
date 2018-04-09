@@ -61,6 +61,11 @@ public class PhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+
+        // 祖传username传下去
+        Intent intent = getIntent();
+        final String username =  intent.getStringExtra("username");
+
         Button takePhoto = (Button) findViewById(R.id.take_photo);
         Button chooseFromAlbum = (Button) findViewById(R.id.choose_from_album);
         picture = (ImageView) findViewById(R.id.picture);
@@ -84,6 +89,7 @@ public class PhotoActivity extends AppCompatActivity {
                 }
                 // 启动相机程序
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent.putExtra("username", username);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(intent, TAKE_PHOTO);
             }
@@ -129,9 +135,16 @@ public class PhotoActivity extends AppCompatActivity {
                         // 将拍摄的照片显示出来
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
                         picture.setImageBitmap(bitmap);
+
+                        // 祖传username传下去
+                        Intent intent = getIntent();
+                        final String username =  intent.getStringExtra("username");
+
+                        // bitmap转base64
                         String imgBase64;
                         imgBase64 = Bitmap2StrByBase64(bitmap);
-                        sendRequestWithOkHttp(imgBase64);
+                        sendRequestWithOkHttp(imgBase64, username);
+
 //                        File file=new File(getExternalCacheDir(), "output_image.jpg");//将要保存图片的路径
 //                        try
 //                        {
@@ -244,14 +257,14 @@ public class PhotoActivity extends AppCompatActivity {
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
-    private void sendRequestWithOkHttp(final String imgBase64) {
+    private void sendRequestWithOkHttp(final String imgBase64, final String username) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     // formbody的数据
                     FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
-                    formBody.add("key","250");//传递键值对参数
+                    formBody.add("username",username);//传递键值对参数
                     formBody.add("image_base64",imgBase64);
 
                     String url = "http://101.132.165.232:8000/maoshen";
