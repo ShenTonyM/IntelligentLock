@@ -236,6 +236,12 @@ public class PhotoActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.setting:
                 Intent intent = new Intent(PhotoActivity.this, SettingActivity.class);
+
+                // 这里不确定 能不能这么写，在这里再get一次上个Activity传过来的username
+                Intent intent1 = getIntent();
+                String username = intent1.getStringExtra("username");
+                intent.putExtra("username", username);
+
                 startActivity(intent);
                 break;
             default:

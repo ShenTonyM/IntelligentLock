@@ -1,5 +1,6 @@
 package com.example.myf19.intelligentlock;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,14 +29,16 @@ import okhttp3.Response;
 
 public class UserGroupActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
     private List<Member> memberList = new ArrayList<Member>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_group);
+
+        Intent intent1 = getIntent();
+        String username = intent1.getStringExtra("username");
+
 //        initFruits(); // 初始化水果数据
         Button button_show = (Button) findViewById(R.id.button_showMembers);
         button_show.setOnClickListener(this);
@@ -41,6 +46,8 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
+
+        // 点击图标的时候会有
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -72,20 +79,43 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         new Thread(new Runnable() {
             @Override
             public void run() {
+
+                Intent intent1 = getIntent();
+                String username = intent1.getStringExtra("username");
                 /*  这里具体的http内容未定  要和服务器端沟通 */
                 try {
-                    OkHttpClient client = new OkHttpClient();
-                    String s = "{'winCondition':'HIGH_SCORE'}";
-//                JSONObject json = new JSONObject();
-//                json.put("username", "Spring");
-                    RequestBody body = RequestBody.create(JSON, s);
+                    // formbody的数据
+                    FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                    formBody.add("username",username);//传递键值对参数
+
+                    String url = "http://101.132.165.232:8000/maoshen/members";
+
+                    // Http Code
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS)
+                            .build();
                     Request request = new Request.Builder()
-                            .url("http://10.0.2.2:8086/get_data.xml")
-                            .post(body)
+                            .url(url)
+                            .post(formBody.build())
                             .build();
                     Response response = client.newCall(request).execute();
-                    String responseData = response.body().string();
+                    final int resonseCode = response.code();
+                    final String responseData = response.body().string();
+                    Log.d("ResponseCode", String.valueOf(resonseCode));
+                    Log.d("Result", responseData);
+
                     parseJSONWithGSON(responseData);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 在这里进行UI操作，将结果显示到界面上
+                            Toast.makeText(UserGroupActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
 //                    showResponse(responseData);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -113,4 +143,5 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
+
 }
