@@ -15,6 +15,9 @@ import com.example.myf19.intelligentlock.model.LoginResult;
 import com.example.myf19.intelligentlock.utils.HttpUtils;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,28 +47,30 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
             @Override
             public void handleMessage(Message msg)
             {
-                super.handleMessage(msg);
-                switch (msg.what)
-                {
-                    case 123:
-                        try
-                        {
-                            Toast.makeText(LoginActivity.this, "您成功登录",Toast.LENGTH_SHORT).show();
+            super.handleMessage(msg);
+            switch (msg.what)
+            {
+                case 123:
+                    try
+                    {
+                        Toast.makeText(LoginActivity.this, "您成功登录",Toast.LENGTH_SHORT).show();
 
-                            //跳转到登录成功的界面
-                            Intent intent = new Intent(LoginActivity.this, PhotoActivity.class);
-                            intent.putExtra("username", username.getText().toString().trim());
-                            startActivity(intent);
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
+                        //跳转到登录成功的界面
+                        Intent intent = new Intent(LoginActivity.this, PhotoActivity.class);
+                        intent.putExtra("username", username.getText().toString().trim());
+                        startActivity(intent);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 234:
+                    Toast.makeText(LoginActivity.this, "Wrong username or password",Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
             }
         };
 
@@ -79,11 +84,6 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
 
     }
 
-    private LoginResult parseJSONWithGson(String jsonData)
-    {
-        Gson gson = new Gson();
-        return gson.fromJson(jsonData, LoginResult.class);
-    }
     public void onClick(View v)
     {
         int id = v.getId();
@@ -93,40 +93,49 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try
-                        {
-                            //POST信息中加入用户名和密码
-                            /* 网址未定 */
-                            String url = "http://101.132.165.232:8000/maoshen/login";
+                    try
+                    {
+                        //POST信息中加入用户名和密码
+                        /* 网址未定 */
+                        String url = "http://101.132.165.232:8000/maoshen/login";
 
-                            map.put("username", username.getText().toString().trim());
-                            map.put("password", password.getText().toString().trim());
-                            HttpUtils.post(url, new Callback() {
-                                @Override
-                                public void onFailure(Call call, IOException e) {
-                                    Log.e("TAG", "NetConnect error!");
+                        map.put("username", username.getText().toString().trim());
+                        map.put("password", password.getText().toString().trim());
+                        HttpUtils.post(url, new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                Log.e("TAG", "NetConnect error!");
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                String responseBodyStr = response.body().string();
+                                JSONObject jsonData = null;
+                                try {
+                                    jsonData = new JSONObject(responseBodyStr);
+                                    String resultStr = jsonData.getString("success");
+
+                                    if (resultStr.equals("success")) //注册成功，发送消息
+                                    {
+                                        Message msg = handler.obtainMessage();
+                                        msg.what = 123;
+                                        handler.sendMessage(msg);
+                                    }
+                                    else //注册失败
+                                    {
+                                        Message msg = handler.obtainMessage();
+                                        msg.what = 234;
+                                        handler.sendMessage(msg);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-
-                                @Override
-                                public void onResponse(Call call, Response response) throws IOException {
-                                    String responseBody = response.body().string();
-
-                                    //不用例子里的LoginResult
-//                                    m_result = parseJSONWithGson(responseBody);
-                                    m_result = responseBody;
-
-                                    //发送登录成功的消息
-                                    Message msg = handler.obtainMessage();
-                                    msg.what = 123;
-                                    msg.obj = m_result; //把登录结果也发送过去
-                                    handler.sendMessage(msg);
-                                }
-                            }, map);
-                        }
-                        catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                            }
+                        }, map);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     }
                 }).start();
                 break;

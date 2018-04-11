@@ -72,50 +72,50 @@ public class RegisterActivity extends AppCompatActivity {
         btn_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                map.put("username", et_empNo.getText().toString());
+                map.put("password", et_pass.getText().toString());
+
+                HttpUtils.post(url, new Callback() {
                     @Override
-                    public void run() {
-                        map.put("username", et_empNo.getText().toString());
-                        map.put("password", et_pass.getText().toString());
-
-                        HttpUtils.post(url, new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                Log.e("TAG", "NetConnect error!");
-                            }
-
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                String responseBodyStr = response.body().string();
-                                try
-                                {
-                                    //获取返回的json数据，为{"success":"success"}形式.
-                                    //JSONArray jsonArray = new JSONArray(responseBodyStr);
-                                    JSONObject jsonData = new JSONObject(responseBodyStr);
-                                    String resultStr = jsonData.getString("success");
-
-                                    if (resultStr.equals("success")) //注册成功，发送消息
-                                    {
-                                        Message msg = handler.obtainMessage();
-                                        msg.what = 123;
-                                        handler.sendMessage(msg);
-                                    }
-                                    else //注册失败
-                                    {
-                                        Message msg = handler.obtainMessage();
-                                        msg.what = 234;
-                                        handler.sendMessage(msg);
-                                    }
-                                }
-                                catch(JSONException e)
-                                {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }, map);
+                    public void onFailure(Call call, IOException e) {
+                        Log.e("TAG", "NetConnect error!");
                     }
-                }).start();
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responseBodyStr = response.body().string();
+                        try
+                        {
+                            //获取返回的json数据，为{"success":"success"}形式.
+                            //JSONArray jsonArray = new JSONArray(responseBodyStr);
+                            JSONObject jsonData = new JSONObject(responseBodyStr);
+                            String resultStr = jsonData.getString("success");
+
+                            if (resultStr.equals("success")) //注册成功，发送消息
+                            {
+                                Message msg = handler.obtainMessage();
+                                msg.what = 123;
+                                handler.sendMessage(msg);
+                            }
+                            else //注册失败
+                            {
+                                Message msg = handler.obtainMessage();
+                                msg.what = 234;
+                                handler.sendMessage(msg);
+                            }
+                        }
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, map);
+                }
+            }).start();
             }
         });
     }
