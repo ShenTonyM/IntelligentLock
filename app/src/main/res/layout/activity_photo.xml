@@ -3,28 +3,48 @@
 android:orientation="vertical"
 android:layout_width="match_parent"
 android:layout_height="match_parent" >
-<TextView
-    android:id="@+id/text_to"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Add Your Photo"
-    android:textColor="#000000"
-    android:textSize="32sp"
 
-    android:layout_marginTop="12sp" />
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="60dp" />
 
-<Button
+    <TextView
+        android:id="@+id/text_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12sp"
+        android:text="Add Your Photo"
+        android:textColor="#808e95"
+        android:layout_marginStart="80dp"
+
+        android:textSize="32sp" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="60dp" />
+
+    <Button
     android:id="@+id/take_photo"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="18sp"
+        android:layout_marginStart="60dp"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+    android:textSize="16sp"
+    android:textColor="#455a64"
+
     android:text="Take Photo" />
 
-<Button
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" />
+
+
+    <Button
     android:id="@+id/choose_from_album"
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="18sp"
+        android:layout_marginStart="60dp"
+        android:layout_width="260dp"
+    android:textSize="16sp"
+    android:textColor="#455a64"
     android:text="Choose From Album" />
 
 <ImageView
