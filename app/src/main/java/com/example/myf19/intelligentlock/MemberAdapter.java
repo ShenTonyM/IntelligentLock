@@ -38,7 +38,7 @@ public class MemberAdapter extends ArrayAdapter<Member> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag(); // 重新获取ViewHolder
         }
-        viewHolder.fruitImage.setImageBitmap(base64ToBitmap(member.getImgString()));
+        viewHolder.fruitImage.setImageBitmap(BitmapFactory.decodeByteArray(member.getPictureBt(), 0, member.getPictureBt().length));
         viewHolder.fruitName.setText(member.getName());
         return view;
     }

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.myf19.intelligentlock.utils.MyHttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,7 +48,7 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
-        // 点击图标的时候会有
+        // 点击图标的时候会有反应
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -80,68 +81,66 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void run() {
 
-                Intent intent1 = getIntent();
-                String username = intent1.getStringExtra("username");
-                /*  这里具体的http内容未定  要和服务器端沟通 */
-                try {
-                    // formbody的数据
-                    FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
-                    formBody.add("username",username);//传递键值对参数
+            Intent intent1 = getIntent();
+            String username = intent1.getStringExtra("username");
+            /*  这里具体的http内容未定  要和服务器端沟通 */
+            try {
+                // formbody的数据
+                FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                formBody.add("username",username);//传递键值对参数
 
-                    String url = "http://101.132.165.232:8000/maoshen/members";
+                String url = "http://101.132.165.232:8000/maoshen/members";
 
-                    // Http Code
-                    OkHttpClient client = new OkHttpClient.Builder()
-                            .connectTimeout(10, TimeUnit.SECONDS)
-                            .writeTimeout(10, TimeUnit.SECONDS)
-                            .readTimeout(30, TimeUnit.SECONDS)
-                            .build();
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .post(formBody.build())
-                            .build();
-                    Response response = client.newCall(request).execute();
-                    final int resonseCode = response.code();
-                    final String responseData = response.body().string();
-                    Log.d("ResponseCode", String.valueOf(resonseCode));
-                    Log.d("Result", responseData);
+                // Http Code
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(10, TimeUnit.SECONDS)
+                        .writeTimeout(10, TimeUnit.SECONDS)
+                        .readTimeout(30, TimeUnit.SECONDS)
+                        .build();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(formBody.build())
+                        .build();
+                Response response = client.newCall(request).execute();
+                final int resonseCode = response.code();
+                String responseData = response.body().string();
+                Log.d("ResponseCode", String.valueOf(resonseCode));
+                Log.d("Result", responseData);
 
-                    parseJSONWithGSON(responseData);
+                parseJSONWithGSON(responseData);
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 在这里进行UI操作，将结果显示到界面上
-                            Toast.makeText(UserGroupActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-//                    showResponse(responseData);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 在这里进行UI操作，将结果显示到界面上
+                        Toast.makeText(UserGroupActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             }
         }).start();
     }
 
     private void parseJSONWithGSON(String jsonData) {
         Gson gson = new Gson();
-        List<Member> appList = gson.fromJson(jsonData, new TypeToken<List<Member>>() {}.getType());
-        for (Member member : appList) {
-//            String memberName = member.getName();
-//            String memberImgString = member.getImgString();
+
+        // User的图片是url, Member的图片是byte[]
+        List<User> appList = gson.fromJson(jsonData, new TypeToken<List<User>>() {}.getType());
+        for (User user : appList) {
+            String userName = user.getName();
+
+            // urlImage是一个图片的url
+            final String urlImage = user.getImgString();
+            // imgByte是二维图片
+            byte[] imgByte;
+
+            MyHttpUtil httpUtil = new MyHttpUtil();
+            imgByte = httpUtil.httpGet(urlImage);
+
+            Member member = new Member(userName,imgByte);
             memberList.add(member);
         }
     }
-
-    private void showResponse(final String response) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // 在这里进行UI操作，将结果显示到界面上
-                Log.d("Members",response);
-            }
-        });
-    }
-
 }

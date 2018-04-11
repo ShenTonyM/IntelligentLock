@@ -4,26 +4,26 @@ public class Member {
 
     private String name;
 
-    private String imgString;
+    private byte[] pictureBt;
 
-    public Member(String name, String imgString) {
+    public Member(String name, byte[] pictureBt) {
         this.name = name;
-        this.imgString = imgString;
+        this.pictureBt = pictureBt;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getImgString() {
-        return imgString;
+    public byte[] getPictureBt() {
+        return pictureBt;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setImgString(String imgString) {
-        this.imgString = imgString;
+    public void setPictureBt(byte[] pictureBt) {
+        this.pictureBt = pictureBt;
     }
 }
