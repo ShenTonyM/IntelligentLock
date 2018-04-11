@@ -31,6 +31,7 @@ import okhttp3.Response;
 public class UserGroupActivity extends AppCompatActivity implements View.OnClickListener {
 
     private List<Member> memberList = new ArrayList<Member>();
+    private List<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,9 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         String username = intent1.getStringExtra("username");
 
 //        initFruits(); // 初始化水果数据
-        Button button_show = (Button) findViewById(R.id.button_showMembers);
-        button_show.setOnClickListener(this);
 
         MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        final ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
         // 点击图标的时候会有反应
@@ -55,6 +54,17 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
                                     int position, long id) {
                 Member member = memberList.get(position);
                 Toast.makeText(UserGroupActivity.this, member.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button button_show = (Button) findViewById(R.id.button_showMembers);
+        button_show.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                sendRequestMembers();
+                MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
+                listView.setAdapter(adapter);
             }
         });
 
@@ -129,18 +139,29 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         // User的图片是url, Member的图片是byte[]
         List<User> appList = gson.fromJson(jsonData, new TypeToken<List<User>>() {}.getType());
         for (User user : appList) {
-            String userName = user.getName();
+            final String userName = user.getName();
+            boolean flag = true;
+            for (User olduser: userList){
+                if(olduser.getName().equals(userName)){
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag){
+                userList.add(user);
 
-            // urlImage是一个图片的url
-            final String urlImage = user.getImgString();
-            // imgByte是二维图片
-            byte[] imgByte;
+                // urlImage是一个图片的url
+                final String urlImage = user.getImgString();
 
-            MyHttpUtil httpUtil = new MyHttpUtil();
-            imgByte = httpUtil.httpGet(urlImage);
+                // imgByte是二维图片
+                final byte[] imgByte;
 
-            Member member = new Member(userName,imgByte);
-            memberList.add(member);
+                MyHttpUtil httpUtil = new MyHttpUtil();
+                imgByte = httpUtil.httpGet(urlImage);
+
+                Member member = new Member(userName,imgByte);
+                memberList.add(member);
+            }
         }
     }
 }

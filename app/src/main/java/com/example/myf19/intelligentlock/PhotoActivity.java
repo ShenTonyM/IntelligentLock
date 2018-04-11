@@ -297,22 +297,11 @@ public class PhotoActivity extends AppCompatActivity {
                             Toast.makeText(PhotoActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    showResponse(responseData);
                 }catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
         }).start();
-    }
-
-    private void showResponse(final String response) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // 在这里进行UI操作，将结果显示到界面上
-                responseText.setText(response);
-            }
-        });
     }
 }
