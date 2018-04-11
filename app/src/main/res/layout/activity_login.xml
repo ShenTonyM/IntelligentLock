@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,74 +18,65 @@
 
     <TextView
         android:id="@+id/text_from"
-        android:layout_width="match_parent"
+        android:layout_width="274dp"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textColor="#0000ff"
-        android:textSize="32sp"
-        android:layout_marginTop="140sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignStart="@+id/text_to"
+        android:layout_below="@+id/imageView3"
+        android:text="Username:"
+        android:textColor="#707070"
+        android:textSize="22sp" />
 
     <EditText
         android:id="@+id/edit_account"
-        android:layout_width="match_parent"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
-        android:hint="Email Address or Phone Number"
-        android:layout_below="@id/text_from"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        />
+        android:layout_below="@+id/text_from"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/text_to"
-        android:layout_width="match_parent"
+        android:layout_width="179dp"
         android:layout_height="wrap_content"
-        android:text="Password"
-        android:textColor="#0000ff"
-        android:textSize="32sp"
-        android:layout_below="@+id/edit_account"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="12sp" />
+        android:layout_alignStart="@+id/edit_account"
+        android:layout_centerVertical="true"
+        android:text="Password:"
+        android:textColor="#707070"
+        android:textSize="22sp" />
+
     <EditText
         android:id="@+id/edit_password"
-        android:layout_width="match_parent"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_to"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:inputType="textPassword"
-        />
+        android:layout_below="@+id/text_to"
+        android:layout_marginStart="46dp"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="30sp"
-        android:textColor="#1155aa"
-        android:layout_marginTop="12sp"
-        android:layout_below="@+id/edit_password"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/text_from"
+        android:layout_marginBottom="76dp"
+        android:text="log in"
+        android:textColor="#455a64"
+        android:textSize="16sp" />
+
     <Button
         android:id="@+id/button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:textSize="15sp"
-        android:textColor="#000000"
-        android:layout_marginTop="12sp"
-        android:layout_below="@+id/button_login"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/edit_account"
+        android:layout_alignTop="@+id/button_login"
+        android:text="sign in"
+        android:textColor="#455a64"
+        android:textSize="16sp" />
 
     <ImageView
-        android:id="@+id/image_lady"
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/intelligent"
-        android:layout_marginTop="36sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="140dp"
+        app:srcCompat="@drawable/标题1" />
 
 </RelativeLayout>

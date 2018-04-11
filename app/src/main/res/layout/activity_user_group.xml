@@ -4,14 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
     <Button
         android:id="@+id/button_showMembers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Members"
         android:layout_gravity="center"
-        android:textSize="30sp">
+        android:textColor="#455a64"
+
+        android:textSize="26sp">
     </Button>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
     <ListView
         android:id="@+id/list_view"

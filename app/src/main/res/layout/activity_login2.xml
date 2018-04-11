@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,9 +9,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="10dp" />
+
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="130dp"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -20,12 +25,17 @@
             android:orientation="horizontal" >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/intelligent" />
+                android:id="@+id/imageView"
+                android:layout_width="370dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/标题1" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="60dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,30 +44,34 @@
 
         <EditText
             android:id="@+id/username"
-            android:layout_width="fill_parent"
+            android:layout_width="290dp"
             android:layout_height="40dp"
-            android:hint="请输入用户名"
-            android:text="daidai"
+            android:layout_marginStart="30dp"
+
+            android:hint="Enter your name"
             android:inputType="textVisiblePassword"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:text="dddsx" />
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            />
+            android:layout_height="10dp" />
+
         <EditText
             android:id="@+id/password"
-            android:layout_width="match_parent"
+            android:layout_width="290dp"
+            android:layout_marginStart="30dp"
+
             android:layout_height="wrap_content"
-            android:hint="请输入密码"
-            android:text="123"
+            android:hint="Enter your password"
             android:inputType="textPassword"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:text="aaa12345" />
     </LinearLayout>
 
     <View
         android:layout_width="wrap_content"
-        android:layout_height="40dp" />
+        android:layout_height="60dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -68,10 +82,14 @@
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="登陆"/>
+            android:layout_marginStart="44dp"
+            android:text="log in"
+            android:textColor="#455a64"
+            android:textSize="16sp" />
+
 
         <View
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="40dp" />
 
         <Button
@@ -79,7 +97,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="注册" />
+            android:textColor="#455a64"
+            android:textSize="16sp"
+            android:text="sign in" />
     </LinearLayout>
 
     <TextView
@@ -87,6 +107,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:textColor="#718792"
         android:text="Result:"/>
 
 </LinearLayout>
