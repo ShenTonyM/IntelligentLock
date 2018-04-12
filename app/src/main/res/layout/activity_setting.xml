@@ -5,27 +5,44 @@
     android:layout_height="match_parent"
     android:weightSum="1">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
     <Button
         android:id="@+id/button_about"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+
         android:text="About Us"
-        android:textSize="30sp"
-        android:textAllCaps="false" />
+        android:textColor="#455a64"
+        android:textSize="16sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
     <Button
         android:id="@+id/buttonHTTPTest"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="HTTP Test"
-        android:textAllCaps="false"
-        android:textSize="30sp"/>
+        android:layout_marginStart="90dp"
+
+        android:textColor="#455a64"
+        android:textSize="16sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
 
     <Button
         android:id="@+id/buttonOtherMembers"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+
         android:text="Other Members"
-        android:textAllCaps="false"
-        android:textSize="30sp"/>
+        android:textColor="#455a64"
+        android:textSize="16sp"/>
 
 </LinearLayout>
