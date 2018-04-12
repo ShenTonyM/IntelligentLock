@@ -17,7 +17,8 @@ android:layout_height="match_parent" >
         android:textColor="#808e95"
         android:layout_marginStart="80dp"
 
-        android:textSize="32sp" />
+        android:textSize="32sp"
+        android:layout_marginLeft="80dp" />
 
     <View
         android:layout_width="wrap_content"
@@ -31,7 +32,8 @@ android:layout_height="match_parent" >
     android:textSize="16sp"
     android:textColor="#455a64"
 
-    android:text="Take Photo" />
+    android:text="Take Photo"
+        android:layout_marginLeft="60dp" />
 
     <View
         android:layout_width="wrap_content"
@@ -45,7 +47,8 @@ android:layout_height="match_parent" >
         android:layout_width="260dp"
     android:textSize="16sp"
     android:textColor="#455a64"
-    android:text="Choose From Album" />
+    android:text="Choose From Album"
+        android:layout_marginLeft="60dp" />
 
 <ImageView
     android:id="@+id/picture"

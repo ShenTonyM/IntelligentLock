@@ -24,7 +24,8 @@
         android:layout_below="@+id/imageView3"
         android:text="Username:"
         android:textColor="#707070"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:layout_alignLeft="@+id/text_to" />
 
     <EditText
         android:id="@+id/edit_account"
@@ -41,7 +42,8 @@
         android:layout_centerVertical="true"
         android:text="Password:"
         android:textColor="#707070"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:layout_alignLeft="@+id/edit_account" />
 
     <EditText
         android:id="@+id/edit_password"
@@ -50,7 +52,9 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/text_to"
         android:layout_marginStart="46dp"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="46dp" />
 
     <Button
         android:id="@+id/button_login"
@@ -61,7 +65,8 @@
         android:layout_marginBottom="76dp"
         android:text="log in"
         android:textColor="#455a64"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_alignLeft="@+id/text_from" />
 
     <Button
         android:id="@+id/button_register"
@@ -71,12 +76,13 @@
         android:layout_alignTop="@+id/button_login"
         android:text="sign in"
         android:textColor="#455a64"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_alignRight="@+id/edit_account" />
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        app:srcCompat="@drawable/标题1" />
+        app:srcCompat="@drawable/title1" />
 
 </RelativeLayout>

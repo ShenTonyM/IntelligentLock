@@ -14,7 +14,8 @@ android:layout_height="match_parent" >
         android:layout_height="wrap_content"
         android:text="Send Request"
         android:textColor="#455a64"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginLeft="60dp" />
 
 <ScrollView
     android:layout_width="match_parent"

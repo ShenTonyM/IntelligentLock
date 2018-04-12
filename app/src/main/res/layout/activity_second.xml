@@ -15,7 +15,9 @@
         android:layout_marginStart="47dp"
         android:text="Device Number"
         android:textColor="#707070"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="47dp" />
 
     <EditText
         android:id="@+id/edit_account"
@@ -34,7 +36,8 @@
         android:layout_marginTop="226dp"
         android:text="Nickname"
         android:textColor="#707070"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:layout_alignLeft="@+id/text_from" />
 
     <EditText
         android:id="@+id/edit_password"
@@ -72,6 +75,6 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="140dp"
-        app:srcCompat="@drawable/标题1" />
+        app:srcCompat="@drawable/title1" />
 
 </RelativeLayout>
