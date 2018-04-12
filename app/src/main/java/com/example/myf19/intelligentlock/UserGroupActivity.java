@@ -1,11 +1,7 @@
 package com.example.myf19.intelligentlock;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,10 +18,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class UserGroupActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,8 +32,8 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_group);
 
-        Intent intent1 = getIntent();
-        String username = intent1.getStringExtra("username");
+//        Intent intent1 = getIntent();
+//        String username = intent1.getStringExtra("username");
 
 //        initFruits(); // 初始化水果数据
 
@@ -53,7 +47,7 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Member member = memberList.get(position);
-                Toast.makeText(UserGroupActivity.this, member.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserGroupActivity.this, member.getUsername(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,15 +85,15 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void run() {
 
-            Intent intent1 = getIntent();
-            String username = intent1.getStringExtra("username");
+//            Intent intent1 = getIntent();
+//            String username = intent1.getStringExtra("username");
             /*  这里具体的http内容未定  要和服务器端沟通 */
             try {
                 // formbody的数据
                 FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
-                formBody.add("username",username);//传递键值对参数
+                formBody.add("username","123");//传递键值对参数
 
-                String url = "http://101.132.165.232:8000/maoshen/members";
+                String url = "http://101.132.165.232:8000/list";
 
                 // Http Code
                 OkHttpClient client = new OkHttpClient.Builder()
@@ -151,7 +145,7 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
                 userList.add(user);
 
                 // urlImage是一个图片的url
-                final String urlImage = user.getImgString();
+                final String urlImage = user.getImage();
 
                 // imgByte是二维图片
                 final byte[] imgByte;

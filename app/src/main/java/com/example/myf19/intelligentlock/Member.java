@@ -2,25 +2,25 @@ package com.example.myf19.intelligentlock;
 
 public class Member {
 
-    private String name;
+    private String username;
 
     private byte[] pictureBt;
 
-    public Member(String name, byte[] pictureBt) {
-        this.name = name;
+    public Member(String username, byte[] pictureBt) {
+        this.username = username;
         this.pictureBt = pictureBt;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     public byte[] getPictureBt() {
         return pictureBt;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPictureBt(byte[] pictureBt) {

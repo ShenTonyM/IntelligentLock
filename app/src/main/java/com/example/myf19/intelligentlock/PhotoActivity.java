@@ -271,7 +271,7 @@ public class PhotoActivity extends AppCompatActivity {
                     // formbody的数据
                     FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
                     formBody.add("username",username);//传递键值对参数
-                    formBody.add("image_base64",imgBase64);
+                    formBody.add("image",imgBase64);
 
                     String url = "http://101.132.165.232:8000/maoshen";
 
@@ -295,6 +295,7 @@ public class PhotoActivity extends AppCompatActivity {
                         public void run() {
                             // 在这里进行UI操作，将结果显示到界面上
                             Toast.makeText(PhotoActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhotoActivity.this, responseData, Toast.LENGTH_SHORT).show();
                         }
                     });
                 }catch (Exception e) {

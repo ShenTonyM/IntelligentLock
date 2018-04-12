@@ -22,9 +22,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -38,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
     private int status;
     Map<String, String> map = new HashMap<String, String>();
     private Handler handler;
-    private String url = "http://101.132.165.232:8000/maoshen/register";
+    private String url = "http://101.132.165.232:8000/register";
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -57,6 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 if (msg.what==123)
                 {
+                    Toast.makeText(RegisterActivity.this, "Successful Registration",Toast.LENGTH_SHORT).show();
                     //跳转到登录成功的界面
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -75,45 +80,109 @@ public class RegisterActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                map.put("username", et_empNo.getText().toString());
-                map.put("password", et_pass.getText().toString());
+                    try
+                    {
+                        // formbody的数据
+                        FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                        formBody.add("username",et_empNo.getText().toString());
+                        // passward是因为田雨非打错了
+                        formBody.add("passward",et_pass.getText().toString());
 
-                HttpUtils.post(url, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        Log.e("TAG", "NetConnect error!");
+                        String url = "http://101.132.165.232:8000/register";
+    //                            String url = "https://www.baidu.com";
+
+                        // Http Code
+                        OkHttpClient client = new OkHttpClient.Builder()
+                                .connectTimeout(10, TimeUnit.SECONDS)
+                                .writeTimeout(10, TimeUnit.SECONDS)
+                                .readTimeout(30, TimeUnit.SECONDS)
+                                .build();
+                        Request request = new Request.Builder()
+                                .url(url)
+                                .post(formBody.build())
+                                .build();
+                        Response response = client.newCall(request).execute();
+                        final int resonseCode = response.code();
+                        final String responseBodyStr = response.body().string();
+
+                        String resultStr = responseBodyStr;
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                // 在这里进行UI操作，将结果显示到界面上
+                                Toast.makeText(RegisterActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, responseBodyStr, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        if (resultStr.equals("yes")) //注册成功，发送消息
+                        {
+                            Message msg = handler.obtainMessage();
+                            msg.what = 123;
+                            handler.sendMessage(msg);
+                        }
+                        else
+                        {
+                            Message msg = handler.obtainMessage();
+                            msg.what = 234;
+                            handler.sendMessage(msg);
+                        }
+
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        String responseBodyStr = response.body().string();
-                        try
-                        {
-                            //获取返回的json数据，为{"success":"success"}形式.
-                            //JSONArray jsonArray = new JSONArray(responseBodyStr);
-                            JSONObject jsonData = new JSONObject(responseBodyStr);
-                            String resultStr = jsonData.getString("success");
 
-                            if (resultStr.equals("success")) //注册成功，发送消息
-                            {
-                                Message msg = handler.obtainMessage();
-                                msg.what = 123;
-                                handler.sendMessage(msg);
-                            }
-                            else //注册失败
-                            {
-                                Message msg = handler.obtainMessage();
-                                msg.what = 234;
-                                handler.sendMessage(msg);
-                            }
-                        }
-                        catch(JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }, map);
+//                    map.put("username", et_empNo.getText().toString());
+//                    // passward是因为田雨非
+//                    map.put("passward", et_pass.getText().toString());
+//
+//                    HttpUtils.post(url, new Callback() {
+//                        @Override
+//                        public void onFailure(Call call, IOException e) {
+//                            Log.e("TAG", "NetConnect error!");
+//                        }
+//
+//                        @Override
+//                        public void onResponse(Call call, Response response) throws IOException {
+//                            final String responseBodyStr = response.body().string();
+//                            try
+//                            {
+//                                //获取返回的json数据，为{"success":"success"}形式.
+//                                JSONObject jsonData = new JSONObject(responseBodyStr);
+//                                String resultStr = jsonData.getString("success");
+//
+//                                resultStr = responseBodyStr;
+//                                runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        // 在这里进行UI操作，将结果显示到界面上
+//                                        Toast.makeText(RegisterActivity.this, responseBodyStr, Toast.LENGTH_SHORT).show();
+//                                    }
+//                                });
+//
+//                                if (resultStr.equals("yes")) //注册成功，发送消息
+//                                {
+//                                    Message msg = handler.obtainMessage();
+//                                    msg.what = 123;
+//                                    handler.sendMessage(msg);
+//                                }
+//                                else //注册失败
+//                                {
+//                                    Message msg = handler.obtainMessage();
+//                                    msg.what = 234;
+//                                    handler.sendMessage(msg);
+//                                }
+//                            }
+//                            catch(JSONException e)
+//                            {
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//                    }, map);
                 }
             }).start();
             }

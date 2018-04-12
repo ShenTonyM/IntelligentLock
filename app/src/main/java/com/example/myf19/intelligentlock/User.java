@@ -7,26 +7,26 @@ package com.example.myf19.intelligentlock;
 public class User {
     private String name;
 
-    private String imgString;
+    private String image;
 
-    public User(String name, String imgString) {
+    public User(String name, String image) {
         this.name = name;
-        this.imgString = imgString;
+        this.image = image;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getImgString() {
-        return imgString;
+    public String getImage() {
+        return image;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setImgString(String imgString) {
-        this.imgString = imgString;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

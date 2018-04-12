@@ -21,9 +21,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class LoginActivity extends BaseReceiverActivity implements View.OnClickListener {
@@ -47,30 +51,30 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
             @Override
             public void handleMessage(Message msg)
             {
-            super.handleMessage(msg);
-            switch (msg.what)
-            {
-                case 123:
-                    try
-                    {
-                        Toast.makeText(LoginActivity.this, "您成功登录",Toast.LENGTH_SHORT).show();
+                super.handleMessage(msg);
+                switch (msg.what)
+                {
+                    case 123:
+                        try
+                        {
+                            Toast.makeText(LoginActivity.this, "Successful login",Toast.LENGTH_SHORT).show();
 
-                        //跳转到登录成功的界面
-                        Intent intent = new Intent(LoginActivity.this, PhotoActivity.class);
-                        intent.putExtra("username", username.getText().toString().trim());
-                        startActivity(intent);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                    break;
-                case 234:
-                    Toast.makeText(LoginActivity.this, "Wrong username or password",Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
+                            //跳转到登录成功的界面
+                            Intent intent = new Intent(LoginActivity.this, PhotoActivity.class);
+                            intent.putExtra("username", username.getText().toString().trim());
+                            startActivity(intent);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 234:
+                        Toast.makeText(LoginActivity.this, "Wrong username or password",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
             }
         };
 
@@ -93,55 +97,108 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                    try
-                    {
-                        //POST信息中加入用户名和密码
-                        /* 网址未定 */
-                        String url = "http://101.132.165.232:8000/maoshen/login";
+                        try
+                        {
+                            // formbody的数据
+                            FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                            formBody.add("username",username.getText().toString());
+                            // passward是因为田雨非打错了
+                            formBody.add("passward",password.getText().toString());
 
-                        map.put("username", username.getText().toString().trim());
-                        map.put("password", password.getText().toString().trim());
-                        HttpUtils.post(url, new Callback() {
-                            @Override
-                            public void onFailure(Call call, IOException e) {
-                                Log.e("TAG", "NetConnect error!");
-                            }
+                            String url = "http://101.132.165.232:8000/login";
+//                            String url = "https://www.baidu.com";
 
-                            @Override
-                            public void onResponse(Call call, Response response) throws IOException {
-                                String responseBodyStr = response.body().string();
-                                JSONObject jsonData = null;
-                                try {
-                                    jsonData = new JSONObject(responseBodyStr);
-                                    String resultStr = jsonData.getString("success");
+                            // Http Code
+                            OkHttpClient client = new OkHttpClient.Builder()
+                                    .connectTimeout(10, TimeUnit.SECONDS)
+                                    .writeTimeout(10, TimeUnit.SECONDS)
+                                    .readTimeout(30, TimeUnit.SECONDS)
+                                    .build();
+                            Request request = new Request.Builder()
+                                    .url(url)
+                                    .post(formBody.build())
+                                    .build();
+                            Response response = client.newCall(request).execute();
+                            final int resonseCode = response.code();
+                            String responseBodyStr = response.body().string();
 
-                                    if (resultStr.equals("success")) //注册成功，发送消息
-                                    {
-                                        Message msg = handler.obtainMessage();
-                                        msg.what = 123;
-                                        handler.sendMessage(msg);
-                                    }
-                                    else //注册失败
-                                    {
-                                        Message msg = handler.obtainMessage();
-                                        msg.what = 234;
-                                        handler.sendMessage(msg);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                            String resultStr = responseBodyStr;
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // 在这里进行UI操作，将结果显示到界面上
+                                    Toast.makeText(LoginActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
                                 }
+                            });
+
+                            // loging是田雨非打错了
+                            if (resultStr.equals("successful loging in")) //注册成功，发送消息
+                            {
+                                Message msg = handler.obtainMessage();
+                                msg.what = 123;
+                                handler.sendMessage(msg);
                             }
-                        }, map);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                            else if(resultStr.equals("wrong password") || resultStr.equals("wrong username"))
+                            {
+                                Message msg = handler.obtainMessage();
+                                msg.what = 234;
+                                handler.sendMessage(msg);
+                            }
+
+
+        //                        //POST信息中加入用户名和密码
+        //                        /* 网址未定 */
+        //                        String url = "http://101.132.165.232:8000/login";
+        //
+        //                        map.put("username", username.getText().toString().trim());
+        //                        map.put("password", password.getText().toString().trim());
+        //                        HttpUtils.post(url, new Callback() {
+        //                            @Override
+        //                            public void onFailure(Call call, IOException e) {
+        //                                Log.e("TAG", "NetConnect error!");
+        //                            }
+        //
+        //                            @Override
+        //                            public void onResponse(Call call, Response response) throws IOException {
+        //                                String responseBodyStr = response.body().string();
+        //                                JSONObject jsonData = null;
+        //                                try {
+        //
+        //                                    jsonData = new JSONObject(responseBodyStr);
+        ////                                    String resultStr = jsonData.getString("success");
+        //
+        //                                    String resultStr = responseBodyStr;
+        //
+        //                                    if (resultStr.equals("success")) //注册成功，发送消息
+        //                                    {
+        //                                        Message msg = handler.obtainMessage();
+        //                                        msg.what = 123;
+        //                                        handler.sendMessage(msg);
+        //                                    }
+        //                                    else //注册失败
+        //                                    {
+        //                                        Message msg = handler.obtainMessage();
+        //                                        msg.what = 234;
+        //                                        handler.sendMessage(msg);
+        //                                    }
+        //                                } catch (JSONException e) {
+        //                                    e.printStackTrace();
+        //                                }
+        //                            }
+        //                        }, map);
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }).start();
                 break;
-            case R.id.btn_register:
+            case R.id.button_register:
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }
