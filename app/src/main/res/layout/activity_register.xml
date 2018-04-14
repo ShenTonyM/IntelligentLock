@@ -44,7 +44,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="Password："
+            android:text="Password:"
             android:textColor="#616161"
 
             android:textSize="@dimen/activity_text_size" />
