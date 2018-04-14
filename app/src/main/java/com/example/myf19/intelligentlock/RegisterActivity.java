@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText et_passConfirm;
 
     private Button btn_Submit;
+    private Button btn_Reset;
 
     private int status;
     Map<String, String> map = new HashMap<String, String>();
@@ -80,111 +81,71 @@ public class RegisterActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try
+                try
+                {
+                    // formbody的数据
+                    FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
+                    formBody.add("username",et_empNo.getText().toString());
+                    // passward是因为田雨非打错了
+                    formBody.add("passward",et_pass.getText().toString());
+
+                    String url = "http://101.132.165.232:8000/register";
+//                            String url = "https://www.baidu.com";
+
+                    // Http Code
+                    OkHttpClient client = new OkHttpClient.Builder()
+                            .connectTimeout(10, TimeUnit.SECONDS)
+                            .writeTimeout(10, TimeUnit.SECONDS)
+                            .readTimeout(30, TimeUnit.SECONDS)
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(formBody.build())
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    final int resonseCode = response.code();
+                    final String responseBodyStr = response.body().string();
+
+                    String resultStr = responseBodyStr;
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // 在这里进行UI操作，将结果显示到界面上
+//                            Toast.makeText(RegisterActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, responseBodyStr, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    if (resultStr.equals("yes")) //注册成功，发送消息
                     {
-                        // formbody的数据
-                        FormBody.Builder formBody = new FormBody.Builder();//创建表单请求体
-                        formBody.add("username",et_empNo.getText().toString());
-                        // passward是因为田雨非打错了
-                        formBody.add("passward",et_pass.getText().toString());
-
-                        String url = "http://101.132.165.232:8000/register";
-    //                            String url = "https://www.baidu.com";
-
-                        // Http Code
-                        OkHttpClient client = new OkHttpClient.Builder()
-                                .connectTimeout(10, TimeUnit.SECONDS)
-                                .writeTimeout(10, TimeUnit.SECONDS)
-                                .readTimeout(30, TimeUnit.SECONDS)
-                                .build();
-                        Request request = new Request.Builder()
-                                .url(url)
-                                .post(formBody.build())
-                                .build();
-                        Response response = client.newCall(request).execute();
-                        final int resonseCode = response.code();
-                        final String responseBodyStr = response.body().string();
-
-                        String resultStr = responseBodyStr;
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // 在这里进行UI操作，将结果显示到界面上
-                                Toast.makeText(RegisterActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(RegisterActivity.this, responseBodyStr, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-                        if (resultStr.equals("yes")) //注册成功，发送消息
-                        {
-                            Message msg = handler.obtainMessage();
-                            msg.what = 123;
-                            handler.sendMessage(msg);
-                        }
-                        else
-                        {
-                            Message msg = handler.obtainMessage();
-                            msg.what = 234;
-                            handler.sendMessage(msg);
-                        }
-
+                        Message msg = handler.obtainMessage();
+                        msg.what = 123;
+                        handler.sendMessage(msg);
                     }
-                    catch (Exception e) {
-                        e.printStackTrace();
+                    else
+                    {
+                        Message msg = handler.obtainMessage();
+                        msg.what = 234;
+                        handler.sendMessage(msg);
                     }
 
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-//                    map.put("username", et_empNo.getText().toString());
-//                    // passward是因为田雨非
-//                    map.put("passward", et_pass.getText().toString());
-//
-//                    HttpUtils.post(url, new Callback() {
-//                        @Override
-//                        public void onFailure(Call call, IOException e) {
-//                            Log.e("TAG", "NetConnect error!");
-//                        }
-//
-//                        @Override
-//                        public void onResponse(Call call, Response response) throws IOException {
-//                            final String responseBodyStr = response.body().string();
-//                            try
-//                            {
-//                                //获取返回的json数据，为{"success":"success"}形式.
-//                                JSONObject jsonData = new JSONObject(responseBodyStr);
-//                                String resultStr = jsonData.getString("success");
-//
-//                                resultStr = responseBodyStr;
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        // 在这里进行UI操作，将结果显示到界面上
-//                                        Toast.makeText(RegisterActivity.this, responseBodyStr, Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//
-//                                if (resultStr.equals("yes")) //注册成功，发送消息
-//                                {
-//                                    Message msg = handler.obtainMessage();
-//                                    msg.what = 123;
-//                                    handler.sendMessage(msg);
-//                                }
-//                                else //注册失败
-//                                {
-//                                    Message msg = handler.obtainMessage();
-//                                    msg.what = 234;
-//                                    handler.sendMessage(msg);
-//                                }
-//                            }
-//                            catch(JSONException e)
-//                            {
-//                                e.printStackTrace();
-//                            }
-//
-//                        }
-//                    }, map);
                 }
             }).start();
+            }
+        });
+        btn_Reset = (Button)findViewById(R.id.btn_reset);
+        btn_Reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_empNo.setText("");
+                et_pass.setText("");
+                et_passConfirm.setText("");
             }
         });
     }

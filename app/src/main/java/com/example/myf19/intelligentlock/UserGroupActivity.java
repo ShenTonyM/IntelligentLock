@@ -1,5 +1,8 @@
 package com.example.myf19.intelligentlock;
 
+import android.annotation.SuppressLint;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +29,9 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
 
     private List<Member> memberList = new ArrayList<Member>();
     private List<User> userList = new ArrayList<>();
+    private Handler handler;
 
+    @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +42,7 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
 
 //        initFruits(); // 初始化水果数据
 
-        MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
+        final MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
         final ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(adapter);
 
@@ -51,13 +56,28 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 789:
+//                        Toast.makeText(UserGroupActivity.this, String.valueOf(789), Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
         Button button_show = (Button) findViewById(R.id.button_showMembers);
         button_show.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
                 sendRequestMembers();
-                MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
+//                MemberAdapter adapter = new MemberAdapter(UserGroupActivity.this, R.layout.user_item, memberList);
                 listView.setAdapter(adapter);
             }
         });
@@ -113,13 +133,13 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
 
                 parseJSONWithGSON(responseData);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 在这里进行UI操作，将结果显示到界面上
-                        Toast.makeText(UserGroupActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // 在这里进行UI操作，将结果显示到界面上
+//                        Toast.makeText(UserGroupActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -157,5 +177,9 @@ public class UserGroupActivity extends AppCompatActivity implements View.OnClick
                 memberList.add(member);
             }
         }
+//        Toast.makeText(UserGroupActivity.this, String.valueOf(memberList.size()), Toast.LENGTH_SHORT).show();
+        Message msg = new Message();
+        msg.what = 789;
+        handler.sendMessage(msg);
     }
 }

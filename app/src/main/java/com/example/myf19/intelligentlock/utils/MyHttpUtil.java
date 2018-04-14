@@ -1,5 +1,8 @@
 package com.example.myf19.intelligentlock.utils;
 
+import android.os.Handler;
+import android.os.Message;
+
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
@@ -11,6 +14,7 @@ import okhttp3.Response;
  */
 
 public class MyHttpUtil {
+    private Handler handler;
     byte[] str;
     public byte[] httpGet(String url){
         OkHttpClient okHttpClient=new OkHttpClient();

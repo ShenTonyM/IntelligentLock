@@ -124,13 +124,13 @@ public class LoginActivity extends BaseReceiverActivity implements View.OnClickL
 
                             String resultStr = responseBodyStr;
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // 在这里进行UI操作，将结果显示到界面上
-                                    Toast.makeText(LoginActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
-                                }
-                            });
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    // 在这里进行UI操作，将结果显示到界面上
+//                                    Toast.makeText(LoginActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
 
                             // loging是田雨非打错了
                             if (resultStr.equals("successful loging in")) //注册成功，发送消息

@@ -144,18 +144,6 @@ public class PhotoActivity extends AppCompatActivity {
                         String imgBase64;
                         imgBase64 = Bitmap2StrByBase64(bitmap);
                         sendRequestWithOkHttp(imgBase64, username);
-
-//                        File file=new File(getExternalCacheDir(), "output_image.jpg");//将要保存图片的路径
-//                        try
-//                        {
-//                            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-//                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//                            bos.flush();
-//                            bos.close();
-//                        }
-//                        catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -227,6 +215,15 @@ public class PhotoActivity extends AppCompatActivity {
         if (imagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             picture.setImageBitmap(bitmap);
+
+            // 祖传username传下去
+            Intent intent = getIntent();
+            final String username =  intent.getStringExtra("username");
+
+            // bitmap转base64
+            String imgBase64;
+            imgBase64 = Bitmap2StrByBase64(bitmap);
+            sendRequestWithOkHttp(imgBase64, username);
         } else {
             Toast.makeText(this, "failed to get image", Toast.LENGTH_SHORT).show();
         }
@@ -294,7 +291,7 @@ public class PhotoActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             // 在这里进行UI操作，将结果显示到界面上
-                            Toast.makeText(PhotoActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(PhotoActivity.this, String.valueOf(resonseCode), Toast.LENGTH_SHORT).show();
                             Toast.makeText(PhotoActivity.this, responseData, Toast.LENGTH_SHORT).show();
                         }
                     });

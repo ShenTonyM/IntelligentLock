@@ -22,15 +22,6 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonHttp = (Button) findViewById(R.id.buttonHTTPTest);
-        buttonHttp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, HTTPActivity.class);
-                startActivity(intent);
-            }
-        });
-
         Button buttonOtherMembers = (Button) findViewById(R.id.buttonOtherMembers);
         buttonOtherMembers.setOnClickListener(new View.OnClickListener() {
             @Override
