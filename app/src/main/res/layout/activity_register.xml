@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="Username:"
@@ -41,7 +41,7 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="Password:"
@@ -68,7 +68,7 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:text="Repassword:"
